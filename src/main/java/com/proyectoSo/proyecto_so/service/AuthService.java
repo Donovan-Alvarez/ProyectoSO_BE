@@ -13,21 +13,35 @@ public class AuthService {
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
     private final JWTService jwtService;
+    private final EmailService emailService;
 
-    public AuthService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, JWTService jwtService){
+    public AuthService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder,
+                       JWTService jwtService,
+                       EmailService emailService){
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.emailService = emailService;
     }
 
     public ResponseEntity<Usuario> register(RegisterRequest registerRequest) throws Exception {
         try{
             Usuario usuario = new Usuario();
+            StringBuilder detalleCorreo = new StringBuilder();
+            detalleCorreo.append("Registro de usuario");
 
             usuario.setNombre(registerRequest.getNombre());
             usuario.setEmail(registerRequest.getEmail());
             usuario.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
             usuario.setRol("USER");
+
+            detalleCorreo.append(" Bievenido: " + registerRequest.getNombre());
+
+            emailService.enviarCorreo(
+                    usuario.getEmail(),
+                    "Registro de usuario " + registerRequest.getEmail(),
+                    detalleCorreo.toString()
+            );
 
             return ResponseEntity.ok(usuarioRepository.save(usuario));
         } catch (Exception e) {

@@ -1,4 +1,15 @@
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: dalvareza6@miumg.edu.gt
+    password: qoxcqyeiuoqiasac
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   application:
     name: proyecto_so
   datasource:
@@ -14,4 +25,9 @@ spring:
         format_sql: true
 
 server:
-  port: 8080
+  port: 8443
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-password: 123456
+    key-store-type: PKCS12
+    key-alias: springboot
