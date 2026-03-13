@@ -1,15 +1,13 @@
 spring:
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: dalvareza6@miumg.edu.gt
-    password: qoxcqyeiuoqiasac
+    host: localhost
+    port: 25
     properties:
       mail:
         smtp:
-          auth: true
+          auth: false
           starttls:
-            enable: true
+            enable: false
   application:
     name: proyecto_so
   datasource:

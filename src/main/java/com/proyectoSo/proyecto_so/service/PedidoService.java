@@ -18,13 +18,16 @@ public class PedidoService {
     private final PedidoRepository pedidoRepository;
     private final ProductoRespository productoRepository;
     private final EmailService emailService;
+    private final FacturaService facturaService;
 
     public PedidoService(PedidoRepository pedidoRepository,
                          ProductoRespository productoRepository,
-                         EmailService emailService) {
+                         EmailService emailService,
+                         FacturaService facturaService) {
         this.pedidoRepository = pedidoRepository;
         this.productoRepository = productoRepository;
         this.emailService = emailService;
+        this.facturaService = facturaService;
     }
 
     public Pedido crearPedido(CrearPedidosRequest request){
@@ -79,12 +82,16 @@ public class PedidoService {
 
         Pedido pedidoGuardado = pedidoRepository.save(pedido);
 
+        facturaService.generarFactura(pedidoGuardado);
+
+        String rutaFactura = facturaService.generarFactura(pedidoGuardado);
         detalleCorreo.append("\nTOTAL: Q").append(total);
 
-        emailService.enviarCorreo(
+        emailService.enviarCorreoConAdjunto(
                 usuario,
                 "Pedido confirmado #" + pedidoGuardado.getId(),
-                detalleCorreo.toString()
+                detalleCorreo.toString(),
+                rutaFactura
         );
 
         return pedidoGuardado;
