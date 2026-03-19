@@ -18,4 +18,6 @@ public class Producto {
     Double precio;
 
     Integer stock;
+
+    String imagen;
 }

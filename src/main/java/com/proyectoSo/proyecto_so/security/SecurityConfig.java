@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/subir/imagen/**").permitAll()
                         // Prueba permitir TODO temporalmente para ver si el 403 desaparece
                         // .requestMatchers("/api/productos/**").permitAll()
                         .anyRequest().authenticated()
