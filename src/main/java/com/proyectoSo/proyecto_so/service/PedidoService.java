@@ -82,8 +82,6 @@ public class PedidoService {
 
         Pedido pedidoGuardado = pedidoRepository.save(pedido);
 
-        facturaService.generarFactura(pedidoGuardado);
-
         String rutaFactura = facturaService.generarFactura(pedidoGuardado);
         detalleCorreo.append("\nTOTAL: Q").append(total);
 
