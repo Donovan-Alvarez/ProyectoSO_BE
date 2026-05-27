@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  maven-settings.xml
+  RUTA: backend/maven-settings.xml
+
+  Este archivo configura Maven para que pueda descargar Spring Boot 4.x SNAPSHOT.
+  El Dockerfile lo copia a /root/.m2/settings.xml antes de ejecutar mvn.
+
+  ¿Por qué es necesario?
+  Spring Boot 4.0.4-SNAPSHOT no está en Maven Central.
+  Solo existe en el repositorio snapshot de Spring: repo.spring.io/snapshot
+  Sin esta configuración, el build de Docker fallará con:
+    "Could not find artifact org.springframework.boot:spring-boot-starter-parent:4.0.4-SNAPSHOT"
+-->
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                              https://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+  <profiles>
+    <profile>
+      <id>spring-snapshots</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <repositories>
+        <repository>
+          <id>spring-snapshots</id>
+          <name>Spring Snapshots</name>
+          <url>https://repo.spring.io/snapshot</url>
+          <releases>
+            <enabled>false</enabled>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>always</updatePolicy>
+          </snapshots>
+        </repository>
+        <repository>
+          <id>spring-milestones</id>
+          <name>Spring Milestones</name>
+          <url>https://repo.spring.io/milestone</url>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+        <repository>
+          <id>central</id>
+          <name>Maven Central</name>
+          <url>https://repo1.maven.org/maven2</url>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+      <pluginRepositories>
+        <pluginRepository>
+          <id>spring-snapshots</id>
+          <url>https://repo.spring.io/snapshot</url>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+          <id>spring-milestones</id>
+          <url>https://repo.spring.io/milestone</url>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </pluginRepository>
+      </pluginRepositories>
+    </profile>
+  </profiles>
+
+</settings>
